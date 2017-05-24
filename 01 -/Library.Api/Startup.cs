@@ -7,9 +7,6 @@ using Library.API.Entities;
 using Library.API.Services;
 using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Swagger;
-using Library.Data.Entities;
-using Library.API.Models;
-using LIbrary.Core.Extensions;
 namespace Library
 {
     public class Startup
