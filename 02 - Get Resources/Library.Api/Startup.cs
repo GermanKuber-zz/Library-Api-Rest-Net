@@ -28,7 +28,7 @@ namespace Library.Api
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = Configuration["connectionStrings:LibraryDB"];
-            services.AddDbContext<LibraryContext>(o => o.UseSqlServer(connectionString));
+            services.AddDbContext<LibraryContext>(o => o.UseSqlite(connectionString));
 
             // register the repository
             services.AddScoped<ILibraryRepository, LibraryRepository>();
