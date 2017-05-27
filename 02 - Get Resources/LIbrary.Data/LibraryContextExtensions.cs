@@ -1,8 +1,8 @@
-﻿using Library.Data.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Library.Data.Entities;
 
-namespace Library.API.Entities
+namespace Library.Data
 {
     public static class LibraryContextExtensions
     {

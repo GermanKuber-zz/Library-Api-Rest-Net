@@ -1,19 +1,14 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Library.Data;
+using Library.Data.Respositories;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Library.API.Entities;
-using Library.API.Services;
-using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Swagger;
-using Library.Data.Entities;
-using Library.API.Models;
-using LIbrary.Core.Extensions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Formatters;
 
-namespace Library
+namespace Library.Api
 {
     public class Startup
     {

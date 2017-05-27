@@ -3,9 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Library.API.Entities;
 
-namespace LIbrary.Data.Migrations
+namespace Library.Data.Migrations
 {
     [DbContext(typeof(LibraryContext))]
     [Migration("20170524231114_First")]

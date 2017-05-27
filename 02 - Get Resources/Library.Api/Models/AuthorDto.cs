@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Library.API.Models
+namespace Library.Api.Models
 {
     //TODO : 06 - Creo DTO para retornar
     public class AuthorDto

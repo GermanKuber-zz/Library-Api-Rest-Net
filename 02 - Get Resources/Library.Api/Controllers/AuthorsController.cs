@@ -1,11 +1,7 @@
-﻿using Library.API.Models;
-using Library.API.Services;
+﻿using Library.Data.Respositories;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using AutoMapper;
-using LIbrary.Core.Extensions;
-namespace Library.API.Controllers
+
+namespace Library.Api.Controllers
 {
     //TODO : 05 - Implemento routing a nivel de controller
     [Route("api/authors")]
