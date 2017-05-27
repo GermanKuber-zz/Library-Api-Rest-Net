@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Library.Data;
+using Library.Data.Respositories;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Library.API.Entities;
-using Library.API.Services;
-using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Swagger;
-namespace Library
+
+namespace Library.Api
 {
     public class Startup
     {
@@ -27,14 +28,11 @@ namespace Library
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = Configuration["connectionStrings:LibraryDB"];
-            services.AddDbContext<LibraryContext>(o => o.UseSqlServer(connectionString));
-
-            // register the repository
+            services.AddDbContext<LibraryContext>(o => o.UseSqlite(connectionString));
             services.AddScoped<ILibraryRepository, LibraryRepository>();
-            // Add framework services.
-            services.AddMvc();
+      
 
-            // Register the Swagger generator, defining one or more Swagger documents
+            services.AddMvc();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Library Api", Version = "v1" });
@@ -47,14 +45,13 @@ namespace Library
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-           
+
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
-
             libraryContext.EnsureSeedDataForContext();
 
             app.UseMvc();

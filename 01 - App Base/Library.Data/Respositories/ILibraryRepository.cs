@@ -1,9 +1,8 @@
-﻿using Library.API.Entities;
-using Library.Data.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Library.Data.Entities;
 
-namespace Library.API.Services
+namespace Library.Data.Respositories
 {
     public interface ILibraryRepository
     {
