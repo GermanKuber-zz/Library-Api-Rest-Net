@@ -10,6 +10,9 @@ using Swashbuckle.AspNetCore.Swagger;
 using Library.Data.Entities;
 using Library.API.Models;
 using LIbrary.Core.Extensions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Formatters;
+
 namespace Library
 {
     public class Startup
@@ -35,8 +38,17 @@ namespace Library
             // register the repository
             services.AddScoped<ILibraryRepository, LibraryRepository>();
             // Add framework services.
-            services.AddMvc();
 
+            services.AddMvc(
+            //TODO : 19 - Envio un request con application/xml, Configuro el error  HTTP Error 406 Not acceptable 
+
+            //setupAction =>
+            //{
+            //    //setupAction.ReturnHttpNotAcceptable = true;
+            //    //////Install-Package Microsoft.AspNetCore.Mvc.Formatters.Xml
+            // ////setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+            //}
+            );
             // Register the Swagger generator, defining one or more Swagger documents
             services.AddSwaggerGen(c =>
             {
@@ -50,16 +62,40 @@ namespace Library
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            AutoMapper.Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<Author, AuthorDto>()
-                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
-                    $"{src.FirstName} {src.LastName}"))
-                    .ForMember(dest => dest.Age, opt => opt.MapFrom(src =>
-                    src.DateOfBirth.GetCurrentAge()));
 
-                cfg.CreateMap<Book, BookDto>();
-            });
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                //TODO : 13 - Manejo la exception a nivel global
+                //Cambio  "ASPNETCORE_ENVIRONMENT": "Development" por >>  "ASPNETCORE_ENVIRONMENT": "Production"
+                //app.UseExceptionHandler(appBuilder =>
+                //{
+                //    appBuilder.Run(async context =>
+                //    {
+                //        context.Response.StatusCode = 500;
+                //        await context.Response.WriteAsync("Ocurrio un error. Intente nuevamente o ponganse en contacto con admin@library.com");
+
+                //    });
+                //});
+            }
+
+
+            //TODO : 08 - Instalo automapper y realizo las configuraciones de mapeo. Utilizamos proyección para el mapeo de la edad
+            //Install-Package AutoMapper
+            //AutoMapper.Mapper.Initialize(cfg =>
+            //{
+            //    cfg.CreateMap<Author, AuthorDto>()
+            //        .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
+            //        $"{src.FirstName} {src.LastName}"))
+            //        .ForMember(dest => dest.Age, opt => opt.MapFrom(src =>
+            //        src.DateOfBirth.GetCurrentAge()));
+
+            //    //TODO : 17 - Configuro el automapper
+            //    //cfg.CreateMap<book, BookDto>();
+            //});
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>

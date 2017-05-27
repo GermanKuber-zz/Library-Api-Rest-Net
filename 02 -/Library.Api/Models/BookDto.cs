@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Library.API.Models
 {
+    //TODO : 16 -  Creo un DTO para books
     public class BookDto
     {
         public Guid Id { get; set; }

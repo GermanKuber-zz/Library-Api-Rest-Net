@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Library.API.Models
 {
+    //TODO : 06 - Creo DTO para retornar
     public class AuthorDto
     {
         public Guid Id { get; set; }
