@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Library.Api.Controllers
 {
     //TODO : 05 - Implemento routing a nivel de controller
-    [Route("api/authors")]
+    //[Route("api/authors")]
     //[Route("api/[controller]")]
     public class AuthorsController : Controller
     {
