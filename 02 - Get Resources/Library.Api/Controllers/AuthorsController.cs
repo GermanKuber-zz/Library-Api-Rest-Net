@@ -17,14 +17,14 @@ namespace Library.Api.Controllers
             _libraryRepository = libraryRepository;
         }
         //TODO : 04 - Implemento el routing
-        //[HttpGet("api/authors")]
-        //public IActionResult GetAuthors()
-        //{
-        //    //TODO : 03 - Implemento el metodo de GetAuthors y retorno un JSON
-        //    var authorsFromRepo = _libraryRepository.GetAuthors();
-        
-        //    return new JsonResult(authorsFromRepo);
-        //}
+        [HttpGet("api/authors")]
+        public IActionResult GetAuthors()
+        {
+            //TODO : 03 - Implemento el metodo de GetAuthors y retorno un JSON
+            var authorsFromRepo = _libraryRepository.GetAuthors();
+
+            return new JsonResult(authorsFromRepo);
+        }
 
 
         //[HttpGet()]

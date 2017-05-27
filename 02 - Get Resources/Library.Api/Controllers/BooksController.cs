@@ -33,21 +33,21 @@ namespace Library.Api.Controllers
         //    return Ok(booksForAuthor);
         //}
 
-        [HttpGet("{id}")]
-        public IActionResult GetBookForAuthor(Guid authorId, Guid id)
-        {
-            //TODO : 18 - Obtengo un libro particular
-            if (!_libraryRepository.AuthorExists(authorId))
-                return NotFound();
+       // [HttpGet("{id}")]
+       // public IActionResult GetBookForAuthor(Guid authorId, Guid id)
+       // {
+       //     //TODO : 18 - Obtengo un libro particular
+       //     if (!_libraryRepository.AuthorExists(authorId))
+       //         return NotFound();
 
-            var bookForAuthorFromRepo = _libraryRepository.GetBookForAuthor(authorId, id);
+       //     var bookForAuthorFromRepo = _libraryRepository.GetBookForAuthor(authorId, id);
 
-            if (bookForAuthorFromRepo == null)
-                return NotFound();
+       //     if (bookForAuthorFromRepo == null)
+       //         return NotFound();
 
 
-            var bookForAuthor = Mapper.Map<BookDto>(bookForAuthorFromRepo);
-            return Ok(bookForAuthor);
-       }
+       //     var bookForAuthor = Mapper.Map<BookDto>(bookForAuthorFromRepo);
+       //     return Ok(bookForAuthor);
+       //}
     }
 }
