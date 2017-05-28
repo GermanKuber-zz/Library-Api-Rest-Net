@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Library.Api.Binders;
 using Library.Api.Models;
 using Library.Data.Entities;
 using Library.Data.Respositories;
@@ -60,7 +61,7 @@ namespace Library.API.Controllers
 
         [HttpGet("({ids})", Name="GetAuthorCollection")]
         public IActionResult GetAuthorCollection(
-            [ModelBinder(BinderType = typeof(Library.Api.Binders.ArrayModelBinder))] IEnumerable<Guid> ids)
+            [ModelBinder(BinderType = typeof(ListModelBinder))] IEnumerable<Guid> ids)
         {         
             //TODO : 11 - Creo un metodo para obtener la lista por id's
             if (ids == null)

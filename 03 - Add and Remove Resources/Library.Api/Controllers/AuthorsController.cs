@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using Library.Data.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace Library.Api.Controllers
 {
@@ -58,7 +59,7 @@ namespace Library.Api.Controllers
             if (!_libraryRepository.Save())
             {
                 throw new Exception("Error al crear un nuevo Author");
-                // return StatusCode(500, "A problem happened with handling your request.");
+                // return StatusCode(500, "Error al crear un nuevo Author.");
             }
 
             var authorToReturn = Mapper.Map<AuthorDto>(authorEntity);
@@ -66,6 +67,19 @@ namespace Library.Api.Controllers
             return CreatedAtRoute("GetAuthor",
                 new { id = authorToReturn.Id },
                 authorToReturn);
+        }
+        
+        
+        [HttpPost("{id}")]
+        public IActionResult BlockAuthorCreation(Guid id)
+        {
+            //TODO : 11 - Creo un método post, para que mis request respondan los código correctos
+            if (_libraryRepository.AuthorExists(id))
+            {
+                return new StatusCodeResult(StatusCodes.Status409Conflict);
+            }
+
+            return NotFound();
         }
     }
 }

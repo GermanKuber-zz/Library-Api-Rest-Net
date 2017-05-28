@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace Library.Api.Binders
 {
     //TODO : 10 - Creo un ModelBinder para bindear un parametro de lista a (id1,id2,id3) (parametro MVC)
-    public class ArrayModelBinder : IModelBinder
+    public class ListModelBinder : IModelBinder
     {
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {

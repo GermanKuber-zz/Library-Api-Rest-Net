@@ -45,6 +45,9 @@ namespace Library.Api
                 setupAction.ReturnHttpNotAcceptable = true;
 
                 setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+                
+                //TODO : 12 - Agrego un formateador de entrada
+                setupAction.InputFormatters.Add(new XmlDataContractSerializerInputFormatter());
             }
             );
             services.AddSwaggerGen(c =>
