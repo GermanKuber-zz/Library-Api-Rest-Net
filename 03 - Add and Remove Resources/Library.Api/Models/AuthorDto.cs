@@ -2,7 +2,6 @@
 
 namespace Library.Api.Models
 {
-    //TODO : 06 - Creo DTO para retornar
     public class AuthorDto
     {
         public Guid Id { get; set; }
