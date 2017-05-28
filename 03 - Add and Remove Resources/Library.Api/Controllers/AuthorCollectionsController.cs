@@ -46,21 +46,23 @@ namespace Library.API.Controllers
 
             var authorCollectionToReturn = Mapper.Map<IEnumerable<AuthorDto>>(authorEntities);
             //TODO : 09 - Creo un metodo para agregar multiples autores
-//            var idsAsString = string.Join(",",
-//                authorCollectionToReturn.Select(a => a.Id));
-//
-//            return CreatedAtRoute("GetAuthorCollection",
-//                new { ids = idsAsString },
-//                authorCollectionToReturn);
-            return Ok();
+            var idsAsString = string.Join(",",
+                authorCollectionToReturn.Select(a => a.Id));
+
+            //TODO : 12 - Agrego informacón en el header con la ubicación de los recursos creados
+            return CreatedAtRoute("GetAuthorCollection",
+                new { ids = idsAsString },
+                authorCollectionToReturn);
+            //return Ok();
         }
 
-       /* // (key1,key2, ...)
+        // (key1,key2, ...)
 
         [HttpGet("({ids})", Name="GetAuthorCollection")]
         public IActionResult GetAuthorCollection(
             [ModelBinder(BinderType = typeof(ArrayModelBinder<>))] IEnumerable<Guid> ids)
-        {           
+        {         
+            //TODO : 11 - Creo un metodo para obtener la lista por id's
             if (ids == null)
             {
                 return BadRequest();
@@ -75,6 +77,6 @@ namespace Library.API.Controllers
 
             var authorsToReturn = Mapper.Map<IEnumerable<AuthorDto>>(authorEntities);
             return Ok(authorsToReturn);
-        }*/
+        }
     }
 }
