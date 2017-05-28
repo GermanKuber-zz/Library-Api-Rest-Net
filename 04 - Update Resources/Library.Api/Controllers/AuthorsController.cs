@@ -43,31 +43,31 @@ namespace Library.Api.Controllers
             return Ok(author);
         }
         
-        //[HttpPost]
-        //public IActionResult CreateAuthor([FromBody] AuthorCreationDto author)
-        //{
-        //    //TODO : 01 - Creo metodo de Post
-        //    if (author == null)
-        //    {
-        //        return BadRequest();
-        //    }
+        [HttpPost]
+        public IActionResult CreateAuthor([FromBody] AuthorCreationDto author)
+        {
+            //TODO : 01 - Creo metodo de Post
+            if (author == null)
+            {
+                return BadRequest();
+            }
 
-        //    var authorEntity = Mapper.Map<Author>(author);
+            var authorEntity = Mapper.Map<Author>(author);
 
-        //    _libraryRepository.AddAuthor(authorEntity);
+            _libraryRepository.AddAuthor(authorEntity);
 
-        //    if (!_libraryRepository.Save())
-        //    {
-        //        throw new Exception("Error al crear un nuevo Author");
-        //        // return StatusCode(500, "Error al crear un nuevo Author.");
-        //    }
+            if (!_libraryRepository.Save())
+            {
+                throw new Exception("Error al crear un nuevo Author");
+                // return StatusCode(500, "Error al crear un nuevo Author.");
+            }
 
-        //    var authorToReturn = Mapper.Map<AuthorDto>(authorEntity);
+            var authorToReturn = Mapper.Map<AuthorDto>(authorEntity);
 
-        //    return CreatedAtRoute("GetAuthor",
-        //        new { id = authorToReturn.Id },
-        //        authorToReturn);
-        //}
+            return CreatedAtRoute("GetAuthor",
+                new { id = authorToReturn.Id },
+                authorToReturn);
+        }
         
 /*        
         [HttpPost("{id}")]
@@ -82,24 +82,24 @@ namespace Library.Api.Controllers
             return NotFound();
         }*/
         
-        //[HttpDelete("{id}")]
-        //public IActionResult DeleteAuthor(Guid id)
-        //{
-        //    //TODO : 13 - Implemento el metodo DELETE
-        //    var authorFromRepo = _libraryRepository.GetAuthor(id);
-        //    if (authorFromRepo == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpDelete("{id}")]
+        public IActionResult DeleteAuthor(Guid id)
+        {
+            //TODO : 13 - Implemento el metodo DELETE
+            var authorFromRepo = _libraryRepository.GetAuthor(id);
+            if (authorFromRepo == null)
+            {
+                return NotFound();
+            }
 
-        //    _libraryRepository.DeleteAuthor(authorFromRepo);
+            _libraryRepository.DeleteAuthor(authorFromRepo);
 
-        //    if (!_libraryRepository.Save())
-        //    {
-        //        throw new Exception($"No se pudo eliminar el uutor {id}");
-        //    }
+            if (!_libraryRepository.Save())
+            {
+                throw new Exception($"No se pudo eliminar el uutor {id}");
+            }
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
     }
 }

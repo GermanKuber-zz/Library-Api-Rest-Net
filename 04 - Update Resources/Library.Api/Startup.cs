@@ -46,8 +46,8 @@ namespace Library.Api
 
                 setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
                 
-                ////TODO : 12 - Agrego un formateador de entrada
-                //setupAction.InputFormatters.Add(new  XmlDataContractSerializerInputFormatter());
+                //TODO : 12 - Agrego un formateador de entrada
+                setupAction.InputFormatters.Add(new  XmlDataContractSerializerInputFormatter());
             }
             );
             services.AddSwaggerGen(c =>
@@ -96,9 +96,9 @@ namespace Library.Api
                 
                 //TODO : 04 - Agrego al automapper los modelos
                 
-                //cfg.CreateMap<Models.AuthorCreationDto, Author>();
+                cfg.CreateMap<Models.AuthorCreationDto, Author>();
 
-                //cfg.CreateMap<Models.BookCreationDto, Book>();
+                cfg.CreateMap<Models.BookCreationDto, Book>();
             });
             app.UseSwagger();
 

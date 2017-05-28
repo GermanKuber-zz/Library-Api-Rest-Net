@@ -23,61 +23,55 @@ namespace Library.API.Controllers
         }
 
         
-        [HttpPost]
-        public IActionResult CreateAuthorCollection(
-            [FromBody] IEnumerable<AuthorCreationDto> authorCollection)
-        {
-            //TODO : 07 - Creo un metodo para agregar multiples autores
-            if (authorCollection == null)
-            {
-                return BadRequest();
-            }
+        //[HttpPost]
+        //public IActionResult CreateAuthorCollection(
+        //    [FromBody] IEnumerable<AuthorCreationDto> authorCollection)
+        //{
+        //    //TODO : 07 - Creo un metodo para agregar multiples autores
+        //    if (authorCollection == null)
+        //        return BadRequest();
 
-            var authorEntities = Mapper.Map<IEnumerable<Author>>(authorCollection);
+        //    var authorEntities = Mapper.Map<IEnumerable<Author>>(authorCollection);
 
-            foreach (var author in authorEntities)
-            {
-                _libraryRepository.AddAuthor(author);
-            }
+        //    foreach (var author in authorEntities)
+        //        _libraryRepository.AddAuthor(author);
 
-            if (!_libraryRepository.Save())
-            {
-                throw new Exception("Creating an author collection failed on save.");
-            }
+        //    if (!_libraryRepository.Save())
+        //        throw new Exception("Error al crear colección de Autores");
 
-            var authorCollectionToReturn = Mapper.Map<IEnumerable<AuthorDto>>(authorEntities);
-            //TODO : 09 - Creo un metodo para agregar multiples autores
-            var idsAsString = string.Join(",",
-                authorCollectionToReturn.Select(a => a.Id));
+        //    var authorCollectionToReturn = Mapper.Map<IEnumerable<AuthorDto>>(authorEntities);
+        //    //TODO : 09 - Creo un metodo para agregar multiples autores
+        //    var idsAsString = string.Join(",",
+        //        authorCollectionToReturn.Select(a => a.Id));
 
-            //TODO : 12 - Agrego informacón en el header con la ubicación de los recursos creados
-            return CreatedAtRoute("GetAuthorCollection",
-                new { ids = idsAsString },
-                authorCollectionToReturn);
-            //return Ok();
-        }
+        //    //TODO : 12 - Agrego informacón en el header con la ubicación de los recursos creados
+        //    return CreatedAtRoute("GetAuthorCollection",
+        //        new { ids = idsAsString },
+        //        authorCollectionToReturn);
+        //    //return Ok();
+        //}
 
-        // (key1,key2, ...)
+        //// (key1,key2, ...)
 
-        [HttpGet("({ids})", Name="GetAuthorCollection")]
-        public IActionResult GetAuthorCollection(
-            [ModelBinder(BinderType = typeof(ListModelBinder))] IEnumerable<Guid> ids)
-        {         
-            //TODO : 11 - Creo un metodo para obtener la lista por id's
-            if (ids == null)
-            {
-                return BadRequest();
-            }
+        //[HttpGet("({ids})", Name="GetAuthorCollection")]
+        //public IActionResult GetAuthorCollection(
+        //    [ModelBinder(BinderType = typeof(ListModelBinder))] IEnumerable<Guid> ids)
+        //{         
+        //    //TODO : 11 - Creo un metodo para obtener la lista por id's
+        //    if (ids == null)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            var authorEntities = _libraryRepository.GetAuthors(ids);
+        //    var authorEntities = _libraryRepository.GetAuthors(ids);
 
-            if (ids.Count() != authorEntities.Count())
-            {
-                return NotFound();
-            }
+        //    if (ids.Count() != authorEntities.Count())
+        //    {
+        //        return NotFound();
+        //    }
 
-            var authorsToReturn = Mapper.Map<IEnumerable<AuthorDto>>(authorEntities);
-            return Ok(authorsToReturn);
-        }
+        //    var authorsToReturn = Mapper.Map<IEnumerable<AuthorDto>>(authorEntities);
+        //    return Ok(authorsToReturn);
+        //}
     }
 }
