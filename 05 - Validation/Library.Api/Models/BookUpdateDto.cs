@@ -2,9 +2,10 @@
 
 namespace Library.Api.Models
 {
-    //TODO : 03 - Creo el DTO para actualizar mi book
+    //TODO : 02 - Agrego validaciones y mensajes de error
     public class BookUpdateDto : BookChangesDto
     {
+        [Required(ErrorMessage = "Por favor ingrese una descipción.")]
         public override string Description
         {
             get

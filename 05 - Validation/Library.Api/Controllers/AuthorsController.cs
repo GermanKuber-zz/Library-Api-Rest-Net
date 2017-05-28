@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.Http;
 
 namespace Library.Api.Controllers
 {
-[Route("api/authors")]
+    [Route("api/authors")]
     public class AuthorsController : Controller
     {
-   
+
         private readonly ILibraryRepository _libraryRepository;
 
         public AuthorsController(ILibraryRepository libraryRepository)
@@ -29,7 +29,7 @@ namespace Library.Api.Controllers
             var authors = Mapper.Map<IEnumerable<AuthorDto>>(authorsFromRepo);
             return Ok(authors);
         }
-        [HttpGet("{id}",Name = "GetAuthor")]
+        [HttpGet("{id}", Name = "GetAuthor")]
         public IActionResult GetAuthor(Guid id)
         {
             var authorFromRepo = _libraryRepository.GetAuthor(id);
@@ -41,7 +41,7 @@ namespace Library.Api.Controllers
             var author = Mapper.Map<AuthorDto>(authorFromRepo);
             return Ok(author);
         }
-        
+
         [HttpPost]
         public IActionResult CreateAuthor([FromBody] AuthorCreationDto author)
         {
@@ -69,11 +69,13 @@ namespace Library.Api.Controllers
         public IActionResult BlockAuthorCreation(Guid id)
         {
             if (_libraryRepository.AuthorExists(id))
+            {
                 return new StatusCodeResult(StatusCodes.Status409Conflict);
+            }
 
             return NotFound();
         }
-                
+
 
         [HttpDelete("{id}")]
         public IActionResult DeleteAuthor(Guid id)
