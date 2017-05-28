@@ -90,6 +90,15 @@ namespace Library.Api
                 cfg.CreateMap<Models.AuthorCreationDto, Author>();
 
                 cfg.CreateMap<Models.BookCreationDto, Book>();
+
+                //TODO : 04 - Agrego la configuracion de los nuevos DTO
+
+
+                //cfg.CreateMap<BookUpdateDto, Book>();
+
+                //cfg.CreateMap<Book, BookUpdateDto>();
+
+
             });
             app.UseSwagger();
 
