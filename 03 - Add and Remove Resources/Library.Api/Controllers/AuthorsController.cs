@@ -13,7 +13,7 @@ namespace Library.Api.Controllers
     public class AuthorsController : Controller
     {
    
-        private ILibraryRepository _libraryRepository;
+        private readonly ILibraryRepository _libraryRepository;
 
         public AuthorsController(ILibraryRepository libraryRepository)
         {
@@ -69,7 +69,7 @@ namespace Library.Api.Controllers
                 authorToReturn);
         }
         
-        
+/*        
         [HttpPost("{id}")]
         public IActionResult BlockAuthorCreation(Guid id)
         {
@@ -80,6 +80,26 @@ namespace Library.Api.Controllers
             }
 
             return NotFound();
+        }*/
+        
+        [HttpDelete("{id}")]
+        public IActionResult DeleteAuthor(Guid id)
+        {
+            //TODO : 13 - Implemento el metodo DELETE
+            var authorFromRepo = _libraryRepository.GetAuthor(id);
+            if (authorFromRepo == null)
+            {
+                return NotFound();
+            }
+
+            _libraryRepository.DeleteAuthor(authorFromRepo);
+
+            if (!_libraryRepository.Save())
+            {
+                throw new Exception($"No se pudo eliminar el uutor {id}");
+            }
+
+            return NoContent();
         }
     }
 }

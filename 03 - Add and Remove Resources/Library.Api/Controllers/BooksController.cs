@@ -11,7 +11,7 @@ namespace Library.Api.Controllers
     [Route("api/authors/{authorId}/books")]
     public class BooksController : Controller
     {
-        private ILibraryRepository _libraryRepository;
+        private readonly ILibraryRepository _libraryRepository;
 
         public BooksController(ILibraryRepository libraryRepository)
         {
@@ -79,6 +79,31 @@ namespace Library.Api.Controllers
             return CreatedAtRoute("GetBookForAuthor",
                 new { authorId = authorId, id = bookToReturn.Id },
                 bookToReturn);
+        }
+        
+        [HttpDelete("{id}")]
+        public IActionResult DeleteBookForAuthor(Guid authorId, Guid id)
+        {
+            //TODO : 12 - Creo metodo de DELETE
+            if (!_libraryRepository.AuthorExists(authorId))
+            {
+                return NotFound();
+            }
+
+            var bookForAuthorFromRepo = _libraryRepository.GetBookForAuthor(authorId, id);
+            if (bookForAuthorFromRepo == null)
+            {
+                return NotFound();
+            }
+
+            _libraryRepository.DeleteBook(bookForAuthorFromRepo);
+
+            if (!_libraryRepository.Save())
+            {
+                throw new Exception($"El libro {id} del autor {authorId} no pudo ser eliminado.");
+            }
+
+            return NoContent();
         }
       
     }
