@@ -4,6 +4,7 @@ using Library.Data.Respositories;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using Library.Data.Entities;
 
 namespace Library.Api.Controllers
 {
@@ -27,8 +28,8 @@ namespace Library.Api.Controllers
             var authors = Mapper.Map<IEnumerable<AuthorDto>>(authorsFromRepo);
             return Ok(authors);
         }
-
-        [HttpGet("{id}")]
+        //TODO : 02 - Agrego un nombre a la acción
+        [HttpGet("{id}",Name = "GetAuthor")]
         public IActionResult GetAuthor(Guid id)
         {
             var authorFromRepo = _libraryRepository.GetAuthor(id);
@@ -39,6 +40,32 @@ namespace Library.Api.Controllers
             }
             var author = Mapper.Map<AuthorDto>(authorFromRepo);
             return Ok(author);
+        }
+        
+        [HttpPost]
+        public IActionResult CreateAuthor([FromBody] AuthorCreationDto author)
+        {
+            //TODO : 01 - Creo metodo de Post
+            if (author == null)
+            {
+                return BadRequest();
+            }
+
+            var authorEntity = Mapper.Map<Author>(author);
+
+            _libraryRepository.AddAuthor(authorEntity);
+
+            if (!_libraryRepository.Save())
+            {
+                throw new Exception("Error al crear un nuevo Author");
+                // return StatusCode(500, "A problem happened with handling your request.");
+            }
+
+            var authorToReturn = Mapper.Map<AuthorDto>(authorEntity);
+
+            return CreatedAtRoute("GetAuthor",
+                new { id = authorToReturn.Id },
+                authorToReturn);
         }
     }
 }

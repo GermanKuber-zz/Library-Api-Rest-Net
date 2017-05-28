@@ -90,6 +90,12 @@ namespace Library.Api
                     src.DateOfBirth.GetCurrentAge()));
 
                 cfg.CreateMap<Book, BookDto>();
+                
+                //TODO : 04 - Agrego al automapper los modelos
+                
+                cfg.CreateMap<Models.AuthorCreationDto, Author>();
+
+                cfg.CreateMap<Models.BookCreationDto, Book>();
             });
             app.UseSwagger();
 

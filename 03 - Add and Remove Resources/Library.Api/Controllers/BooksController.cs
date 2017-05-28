@@ -4,6 +4,7 @@ using Library.Api.Models;
 using Library.Data.Respositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Library.Data.Entities;
 
 namespace Library.Api.Controllers
 {
@@ -31,8 +32,9 @@ namespace Library.Api.Controllers
 
             return Ok(booksForAuthor);
         }
-
-        [HttpGet("{id}")]
+        
+        //TODO : 06 - Le pongo un nombre al Metodo Get
+        [HttpGet("{id}", Name = "GetBookForAuthor")]
         public IActionResult GetBookForAuthor(Guid authorId, Guid id)
         {
             if (!_libraryRepository.AuthorExists(authorId))
@@ -47,5 +49,37 @@ namespace Library.Api.Controllers
             var bookForAuthor = Mapper.Map<BookDto>(bookForAuthorFromRepo);
             return Ok(bookForAuthor);
         }
+        
+        [HttpPost()]
+        public IActionResult CreateBookForAuthor(Guid authorId, 
+            [FromBody] BookCreationDto book)
+        {
+            //TODO : 05 - Agrego el método para crear un libro según su autor
+            if (book == null)
+            {
+                return BadRequest();
+            }
+
+            if (!_libraryRepository.AuthorExists(authorId))
+            {
+                return NotFound();
+            }
+
+            var bookEntity = Mapper.Map<Book>(book);
+
+            _libraryRepository.AddBookForAuthor(authorId, bookEntity);
+
+            if (!_libraryRepository.Save())
+            {
+                throw new Exception($"La creación de libro para el autor : {authorId} no pude efectuarse.");
+            }
+
+            var bookToReturn = Mapper.Map<BookDto>(bookEntity);
+
+            return CreatedAtRoute("GetBookForAuthor",
+                new { authorId = authorId, id = bookToReturn.Id },
+                bookToReturn);
+        }
+      
     }
 }
