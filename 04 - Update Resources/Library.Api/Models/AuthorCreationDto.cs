@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 namespace Library.Api.Models
 {
-    //TODO : 03 - Agrego clases DTO para crear
-
     public class AuthorCreationDto
     {
         public string FirstName { get; set; }

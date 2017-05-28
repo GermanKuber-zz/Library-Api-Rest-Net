@@ -28,35 +28,27 @@ namespace Library.Api
 
         public IConfigurationRoot Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = Configuration["connectionStrings:LibraryDB"];
             services.AddDbContext<LibraryContext>(o => o.UseSqlite(connectionString));
 
-            // register the repository
             services.AddScoped<ILibraryRepository, LibraryRepository>();
-            // Add framework services.
 
-            services.AddMvc(
+            services.AddMvc(setupAction =>
+           {
+               setupAction.ReturnHttpNotAcceptable = true;
 
-            setupAction =>
-            {
-                setupAction.ReturnHttpNotAcceptable = true;
+               setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
 
-                setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
-                
-                //TODO : 12 - Agrego un formateador de entrada
-                setupAction.InputFormatters.Add(new  XmlDataContractSerializerInputFormatter());
-            }
-            );
+               setupAction.InputFormatters.Add(new XmlDataContractSerializerInputFormatter());
+           });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Library Api", Version = "v1" });
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, LibraryContext libraryContext)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -69,8 +61,8 @@ namespace Library.Api
             }
             else
             {
-               
-               //Cambio  "ASPNETCORE_ENVIRONMENT": "Development" por >> "ASPNETCORE_ENVIRONMENT": "Production"
+
+                //Cambio  "ASPNETCORE_ENVIRONMENT": "Development" por >> "ASPNETCORE_ENVIRONMENT": "Production"
                 app.UseExceptionHandler(appBuilder =>
                 {
                     appBuilder.Run(async context =>
@@ -93,9 +85,8 @@ namespace Library.Api
                     src.DateOfBirth.GetCurrentAge()));
 
                 cfg.CreateMap<Book, BookDto>();
-                
-                //TODO : 04 - Agrego al automapper los modelos
-                
+
+
                 cfg.CreateMap<Models.AuthorCreationDto, Author>();
 
                 cfg.CreateMap<Models.BookCreationDto, Book>();

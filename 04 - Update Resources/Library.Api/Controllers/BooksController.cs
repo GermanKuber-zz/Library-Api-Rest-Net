@@ -33,7 +33,6 @@ namespace Library.Api.Controllers
             return Ok(booksForAuthor);
         }
         
-        //TODO : 06 - Le pongo un nombre al Metodo Get
         [HttpGet("{id}", Name = "GetBookForAuthor")]
         public IActionResult GetBookForAuthor(Guid authorId, Guid id)
         {
@@ -54,25 +53,18 @@ namespace Library.Api.Controllers
         public IActionResult CreateBookForAuthor(Guid authorId, 
             [FromBody] BookCreationDto book)
         {
-            //TODO : 05 - Agrego el método para crear un libro según su autor
             if (book == null)
-            {
                 return BadRequest();
-            }
 
             if (!_libraryRepository.AuthorExists(authorId))
-            {
                 return NotFound();
-            }
 
             var bookEntity = Mapper.Map<Book>(book);
 
             _libraryRepository.AddBookForAuthor(authorId, bookEntity);
 
             if (!_libraryRepository.Save())
-            {
                 throw new Exception($"La creación de libro para el autor : {authorId} no pude efectuarse.");
-            }
 
             var bookToReturn = Mapper.Map<BookDto>(bookEntity);
 
@@ -84,24 +76,17 @@ namespace Library.Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteBookForAuthor(Guid authorId, Guid id)
         {
-            //TODO : 12 - Creo metodo de DELETE
             if (!_libraryRepository.AuthorExists(authorId))
-            {
                 return NotFound();
-            }
 
             var bookForAuthorFromRepo = _libraryRepository.GetBookForAuthor(authorId, id);
             if (bookForAuthorFromRepo == null)
-            {
                 return NotFound();
-            }
 
             _libraryRepository.DeleteBook(bookForAuthorFromRepo);
 
             if (!_libraryRepository.Save())
-            {
                 throw new Exception($"El libro {id} del autor {authorId} no pudo ser eliminado.");
-            }
 
             return NoContent();
         }
