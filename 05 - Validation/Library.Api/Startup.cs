@@ -12,6 +12,8 @@ using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 using Library.Core.Extensions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Diagnostics;
+
 namespace Library.Api
 {
     public class Startup
@@ -51,12 +53,20 @@ namespace Library.Api
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, LibraryContext libraryContext)
         {
+
+            
+
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+
+            //TODO : 11 - Install-Package Microsoft.Extensions.Logging.Debug
+            //Configuro mi logg en information
+            loggerFactory.AddDebug(LogLevel.Information);
 
 
-            if (env.IsDevelopment())
+            if (!env.IsDevelopment())
             {
+                //TODO : 13 - Niego el modo Development para ejecutar mi manejador
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -67,6 +77,17 @@ namespace Library.Api
                 {
                     appBuilder.Run(async context =>
                     {
+                        //TODO : 12 - Logueo la exception
+                        var exceptionHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
+                        if (exceptionHandlerFeature != null)
+                        {
+                            var logger = loggerFactory.CreateLogger("Global exception logger");
+                            logger.LogError(500,
+                                exceptionHandlerFeature.Error,
+                                exceptionHandlerFeature.Error.Message);
+                        }
+
+
                         context.Response.StatusCode = 500;
                         await context.Response.WriteAsync("Ocurrio un error. Intente nuevamente o ponganse en contacto con admin@library.com");
 

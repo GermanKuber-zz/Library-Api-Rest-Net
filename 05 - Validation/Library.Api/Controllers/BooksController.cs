@@ -161,6 +161,8 @@ namespace Library.Api.Controllers
         public IActionResult PartiallyUpdateBookForAuthor(Guid authorId, Guid id,
                                  [FromBody] JsonPatchDocument<BookUpdateDto> patchDoc)
         {
+
+ 
             if (patchDoc == null)
                 return BadRequest();
 
@@ -208,7 +210,10 @@ namespace Library.Api.Controllers
             var bookToPatch = Mapper.Map<BookUpdateDto>(bookForAuthorFromRepo);
 
             //TODO : 09 - Aplicamos el ModelState en el validador
-            patchDoc.ApplyTo(bookToPatch, ModelState);
+           patchDoc.ApplyTo(bookToPatch, ModelState);
+
+        
+
 
             TryValidateModel(bookToPatch);
 
