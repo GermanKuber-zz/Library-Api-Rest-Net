@@ -114,7 +114,14 @@ namespace Library.Api.Controllers
             if (!_libraryRepository.AuthorExists(authorId))
                 return NotFound();
 
-         
+            //TODO : 07 - Agrego regla de Negocio al Update
+            if (book.Description == book.Title)
+                ModelState.AddModelError(nameof(BookCreationDto),
+                    "El titulo debe de ser distinto a la descripción.");
+
+            //TODO : 08 - Valido el modelo
+            if (!ModelState.IsValid)
+                return new UnprocessableEntityObjectResult(ModelState);
 
             var bookForAuthorFromRepo = _libraryRepository.GetBookForAuthor(authorId, id);
             if (bookForAuthorFromRepo == null)
@@ -166,9 +173,22 @@ namespace Library.Api.Controllers
             {
                 var bookDto = new BookUpdateDto();
 
+                //TODO : 10 - Aplicamos el ModelState en el validador
                 patchDoc.ApplyTo(bookDto, ModelState);
 
+          
+
+                if (bookDto.Description == bookDto.Title)
+                    ModelState.AddModelError(nameof(BookCreationDto),
+                        "El titulo debe de ser distinto a la descripción.");
+
                 TryValidateModel(bookDto);
+
+                if (!ModelState.IsValid)
+                    //Si no es valido retornamos errores
+                    return new UnprocessableEntityObjectResult(ModelState);
+
+
 
                 var bookToAdd = Mapper.Map<Book>(bookDto);
                 bookToAdd.Id = id;
@@ -187,9 +207,17 @@ namespace Library.Api.Controllers
 
             var bookToPatch = Mapper.Map<BookUpdateDto>(bookForAuthorFromRepo);
 
+            //TODO : 09 - Aplicamos el ModelState en el validador
             patchDoc.ApplyTo(bookToPatch, ModelState);
 
-            patchDoc.ApplyTo(bookToPatch);
+            TryValidateModel(bookToPatch);
+
+            if (!ModelState.IsValid)
+               //Si no es valido retornamos errores
+                return new UnprocessableEntityObjectResult(ModelState);
+
+
+            //patchDoc.ApplyTo(bookToPatch);
 
 
             Mapper.Map(bookToPatch, bookForAuthorFromRepo);
