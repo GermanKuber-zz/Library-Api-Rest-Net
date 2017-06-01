@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Library.Data.Entities;
 using Microsoft.AspNetCore.JsonPatch;
 using Library.Api.Helper;
+using Microsoft.Extensions.Logging;
 
 namespace Library.Api.Controllers
 {
@@ -14,10 +15,13 @@ namespace Library.Api.Controllers
     public class BooksController : Controller
     {
         private readonly ILibraryRepository _libraryRepository;
-
-        public BooksController(ILibraryRepository libraryRepository)
+        private readonly ILogger<BooksController> _logger;
+        //TODO : 14 - Inyecto mi Logger
+        public BooksController(ILibraryRepository libraryRepository,
+            ILogger<BooksController> logger)
         {
             _libraryRepository = libraryRepository;
+            _logger = logger;
         }
 
         [HttpGet()]
@@ -85,7 +89,7 @@ namespace Library.Api.Controllers
                 new { authorId = authorId, id = bookToReturn.Id },
                 bookToReturn);
         }
-
+        //https://github.com/aspnet/Logging
         [HttpDelete("{id}")]
         public IActionResult DeleteBookForAuthor(Guid authorId, Guid id)
         {
@@ -101,6 +105,8 @@ namespace Library.Api.Controllers
             if (!_libraryRepository.Save())
                 throw new Exception($"El libro {id} del autor {authorId} no pudo ser eliminado.");
 
+            //TODO : 15 - Logueamos el delete
+            _logger.LogInformation(100, $"El libro {id} del autor {authorId} no pudo ser eliminado.");
             return NoContent();
         }
 
