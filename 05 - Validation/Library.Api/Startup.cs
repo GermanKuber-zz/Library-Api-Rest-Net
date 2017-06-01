@@ -13,7 +13,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Library.Core.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Diagnostics;
-
+using NLog.Extensions.Logging;
 namespace Library.Api
 {
     public class Startup
@@ -63,6 +63,9 @@ namespace Library.Api
             //Configuro mi logg en information
             loggerFactory.AddDebug(LogLevel.Information);
 
+            //TODO : 16 - Install-Package NLog.Extensions.Logging -Pre
+            //Configuro NLog
+            loggerFactory.AddNLog();
 
             if (!env.IsDevelopment())
             {
