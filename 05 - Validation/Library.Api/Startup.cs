@@ -65,6 +65,7 @@ namespace Library.Api
 
             //TODO : 16 - Install-Package NLog.Extensions.Logging -Pre
             //Configuro NLog
+            //Agrego nlog.config y lo marco como Copy always
             loggerFactory.AddNLog();
 
             if (!env.IsDevelopment())

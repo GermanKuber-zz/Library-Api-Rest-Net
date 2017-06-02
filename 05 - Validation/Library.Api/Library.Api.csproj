@@ -25,4 +25,9 @@
     <ProjectReference Include="..\Library.Core\Library.Core.csproj" />
     <ProjectReference Include="..\Library.Data\Library.Data.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="nlog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
