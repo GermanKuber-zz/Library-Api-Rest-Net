@@ -17,33 +17,38 @@ namespace Library.Api.Controllers
         private readonly ILibraryRepository _libraryRepository;
         private readonly IUrlHelper _urlHelper;
         private readonly IPropertyMappingService _propertyMappingService;
+        private readonly ITypeHelperService _typeHelperService;
 
         public AuthorsController(ILibraryRepository libraryRepository,
             IUrlHelper urlHelper
               //TODO : 12 - Inyecto el servicio para validar siempre la cadena OrderBy
               , IPropertyMappingService propertyMappingService
+            //TODO : 21 - Inyecto el servicio de validación de field
+            ,ITypeHelperService typeHelperService
             )
         {
             _libraryRepository = libraryRepository;
             _urlHelper = urlHelper;
             _propertyMappingService = propertyMappingService;
+            _typeHelperService = typeHelperService;
         }
 
         [HttpGet(Name = "GetAuthors")]
         public IActionResult GetAuthors(AuthorsResourceParameters authorsResourceParameters)
         {
-            //TODO : 13 - Valido la entrada y en caso de error retorno 404
+            //TODO : 13 - Valido la entrada y en caso de error retorno 400
             if (!_propertyMappingService.ValidMappingExistsFor<AuthorDto, Author>
               (authorsResourceParameters.OrderBy))
             {
                 return BadRequest();
             }
 
-            //if (!_typeHelperService.TypeHasProperties<AuthorDto>
-            //    (authorsResourceParameters.Fields))
-            //{
-            //    return BadRequest();
-            //}
+            //TODO : 20 - Valido si todas las propiedades que se solicitan en la propiedad field, correstaponden con propiedades rales del objeto
+            if (!_typeHelperService.TypeHasProperties<AuthorDto>
+                (authorsResourceParameters.Fields))
+            {
+                return BadRequest();
+            }
 
             var authorsFromRepo = _libraryRepository.GetAuthors(authorsResourceParameters);
             var previousPageLink = authorsFromRepo.HasPrevious ?
@@ -67,7 +72,13 @@ namespace Library.Api.Controllers
             Response.Headers.Add("X-Pagination",
                 Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
             var authors = Mapper.Map<IEnumerable<AuthorDto>>(authorsFromRepo);
-            return Ok(authors);
+
+
+            //return Ok(authors);
+
+            //TODO : 16 - Se utiliza el método de extensión
+            return Ok(authors.ShapeData(authorsResourceParameters.Fields));
+
         }
         [HttpGet("{id}", Name = "GetAuthor")]
         public IActionResult GetAuthor(Guid id)
@@ -146,8 +157,10 @@ namespace Library.Api.Controllers
                           pageNumber = authorsResourceParameters.PageNumber - 1,
                           pageSize = authorsResourceParameters.PageSize,
                           //TODO : 10 - Agrego campos de orden y de filtrado a las respuestas.
-                          fields = authorsResourceParameters.Fields,
-                          orderBy = authorsResourceParameters.OrderBy
+                          orderBy = authorsResourceParameters.OrderBy,
+                          //TODO : 22 -  Retorno la propiedad de field en los links
+                          fields = authorsResourceParameters.Fields
+                    
                       });
                 case ResourceUriType.NextPage:
                     return _urlHelper.Link("GetAuthors",

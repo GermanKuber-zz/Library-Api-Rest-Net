@@ -23,6 +23,7 @@
 
         //TODO : 01 - Agrego propieadad mediante la cual ordenar mis Autores
         public string OrderBy { get; set; } = "Name";
+        //TODO : 15 - Agrego una propiedad para recibir la lista de propieaddes a mostrar en los objetos de respuesta.
         public string Fields { get; set; }
     }
 }

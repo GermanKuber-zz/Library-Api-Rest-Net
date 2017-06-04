@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Library.Data.Services;
+using Newtonsoft.Json.Serialization;
 
 namespace Library.Api
 {
@@ -49,7 +50,13 @@ namespace Library.Api
                setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
 
                setupAction.InputFormatters.Add(new XmlDataContractSerializerInputFormatter());
-           });
+           })
+               //TODO : 23 - Agergo CamelCase a el serializador de dictionary
+               .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ContractResolver =
+                    new CamelCasePropertyNamesContractResolver();
+                });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Library Api", Version = "v1" });
@@ -66,13 +73,14 @@ namespace Library.Api
             //TODO : 07 - Registro el servicio en el contexto de net core
             services.AddTransient<IPropertyMappingService, PropertyMappingService>();
 
-           // services.AddTransient<ITypeHelperService, TypeHelperService>();
+            //TODO : 19 - Registramos el servicio de validación
+            services.AddTransient<ITypeHelperService, TypeHelperService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, LibraryContext libraryContext)
         {
 
-            
+
 
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
