@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Library.Api.Controllers
 {
     //TODO : 05 - Implemento routing a nivel de controller
-    [Route("api/authors")]
+    //[Route("api/authors")]
     //[Route("api/[controller]")]
     public class AuthorsController : Controller
     {
@@ -17,7 +17,7 @@ namespace Library.Api.Controllers
             _libraryRepository = libraryRepository;
         }
         //TODO : 04 - Implemento el routing
-        [HttpGet("api/authors")]
+        //[HttpGet("api/authors")]
         public IActionResult GetAuthors()
         {
             //TODO : 03 - Implemento el metodo de GetAuthors y retorno un JSON
